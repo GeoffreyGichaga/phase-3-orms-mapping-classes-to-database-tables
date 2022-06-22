@@ -1,8 +1,9 @@
 class Song
 
-  attr_accessor :name, :album
+  attr_accessor :name, :album, :id
 
-  def initialize(name:, album:)
+  def initialize(name:, album:, id:nil)
+    @id = id
     @name = name
     @album = album
   end
@@ -25,7 +26,7 @@ class Song
     SQL
     DB[:conn].execute(sql,self.name,self.album)
 
-    self.id = DB[:conn].execute("SELECT last_inserted_rowid() FROM songs")[0][0]
+    self.id = DB[:conn].execute("SELECT last_insert_rowid() FROM songs")[0][0]
     self
   end 
 
@@ -33,6 +34,6 @@ class Song
     song = Song.new(name:name,album:album)
     song.save
   end
-  self
+  
 
 end
